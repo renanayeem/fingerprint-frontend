@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +16,11 @@ export class Login {
 
   constructor(private router: Router, private http: HttpClient) {}
 
-  login() {
-    const fingerprint = navigator.userAgent + screen.width + screen.height + navigator.language;
-    
+  async login() {
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    const fingerprint = result.visitorId;
+
     this.http.post('http://localhost:8080/api/login', {
       username: this.username,
       password: this.password,

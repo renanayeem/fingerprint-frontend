@@ -1,9 +1,11 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
   const fingerprint = window.localStorage.getItem('fingerprint') ?? 'unknown-device';
-  
-  console.log('Interceptor fired! Fingerprint:', fingerprint);
+  const router = inject(Router);
 
   const clonedReq = req.clone({
     setHeaders: {
@@ -11,5 +13,14 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
     }
   });
 
-  return next(clonedReq);
+  return next(clonedReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        console.log('401 Unauthorized! Redirecting to login...');
+        localStorage.removeItem('fingerprint');
+        router.navigate(['/login']);
+      }
+      return throwError(() => error);
+    })
+  );
 };

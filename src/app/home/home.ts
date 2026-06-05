@@ -28,7 +28,7 @@ export class Home {
   }
 
   logout() {
-    localStorage.removeItem('fingerprint');
+    localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/login']);
   }
 }

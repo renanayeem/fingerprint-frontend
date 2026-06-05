@@ -37,7 +37,7 @@ export class Login {
       fingerprint: hashedFingerprint
     }).subscribe({
       next: (res: any) => {
-        localStorage.setItem('fingerprint', hashedFingerprint);
+        localStorage.setItem('isLoggedIn','true');
         this.router.navigate(['/home']);
       },
       error: () => {

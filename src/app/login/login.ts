@@ -16,18 +16,28 @@ export class Login {
 
   constructor(private router: Router, private http: HttpClient) {}
 
+  async hashFingerprint(input: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
   async login() {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    const fingerprint = result.visitorId;
+    const rawFingerprint = result.visitorId;
+    const hashedFingerprint = await this.hashFingerprint(rawFingerprint);
 
     this.http.post('http://localhost:8080/api/login', {
       username: this.username,
       password: this.password,
-      fingerprint: fingerprint
+      fingerprint: hashedFingerprint
     }).subscribe({
       next: (res: any) => {
-        localStorage.setItem('fingerprint', fingerprint);
+        localStorage.setItem('fingerprint', hashedFingerprint);
         this.router.navigate(['/home']);
       },
       error: () => {

@@ -27,8 +27,16 @@ export class Home {
     });
   }
 
-  logout() {
-    localStorage.removeItem('isLoggedIn');
-    this.router.navigate(['/login']);
+ logout() {
+    this.http.post('http://localhost:8080/api/logout', {}).subscribe({
+      next: () => {
+        localStorage.removeItem('isLoggedIn');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.removeItem('isLoggedIn');
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

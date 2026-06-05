@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class Home {
   message = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getData() {
     this.http.get('http://localhost:8080/api/data').subscribe({
@@ -24,5 +25,10 @@ export class Home {
       next: (res: any) => this.message = res.message,
       error: () => this.message = 'Error posting data!'
     });
+  }
+
+  logout() {
+    localStorage.removeItem('fingerprint');
+    this.router.navigate(['/login']);
   }
 }

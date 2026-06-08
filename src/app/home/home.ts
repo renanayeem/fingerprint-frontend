@@ -27,14 +27,16 @@ export class Home {
     });
   }
 
- logout() {
+  logout() {
     this.http.post('http://localhost:8080/api/logout', {}).subscribe({
       next: () => {
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('token');
         this.router.navigate(['/login']);
       },
       error: () => {
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('token');
         this.router.navigate(['/login']);
       }
     });

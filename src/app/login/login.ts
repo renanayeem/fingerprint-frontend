@@ -37,9 +37,10 @@ export class Login {
       fingerprint: hashedFingerprint
     }).subscribe({
       next: (res: any) => {
-        localStorage.setItem('isLoggedIn','true');
-        this.router.navigate(['/home']);
-      },
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('token', res.token);
+    this.router.navigate(['/home']);
+},
       error: () => {
         alert('Invalid credentials!');
       }

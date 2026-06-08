@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 @Component({
@@ -14,7 +15,11 @@ export class Login {
   username = '';
   password = '';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   async hashFingerprint(input: string): Promise<string> {
     const encoder = new TextEncoder();
@@ -37,10 +42,9 @@ export class Login {
       fingerprint: hashedFingerprint
     }).subscribe({
       next: (res: any) => {
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('token', res.token);
-    this.router.navigate(['/home']);
-},
+        this.authService.setToken(res.token);
+        this.router.navigate(['/home']);
+      },
       error: () => {
         alert('Invalid credentials!');
       }

@@ -1,11 +1,13 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 import { catchError, throwError } from 'rxjs';
 
 export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const authService = inject(AuthService);
+  const token = authService.getToken();
 
   const clonedReq = req.clone({
     withCredentials: true,
@@ -16,9 +18,7 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         console.log('401 Unauthorized! Redirecting to login...');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('token');
-        router.navigate(['/login']);
+        authService.logout();
       }
       return throwError(() => error);
     })

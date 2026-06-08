@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class Home {
   message = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getData() {
     this.http.get('http://localhost:8080/api/data').subscribe({
@@ -28,17 +28,6 @@ export class Home {
   }
 
   logout() {
-    this.http.post('http://localhost:8080/api/logout', {}).subscribe({
-      next: () => {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-      }
-    });
+    this.authService.logout();
   }
 }

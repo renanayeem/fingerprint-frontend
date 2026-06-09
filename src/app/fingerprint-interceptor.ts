@@ -16,8 +16,8 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(clonedReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        console.log('401 Unauthorized! Redirecting to login...');
+      if (error.status === 401 || error.status === 403) {
+        console.log('Unauthorized! Redirecting to login...');
         authService.logout();
       }
       return throwError(() => error);

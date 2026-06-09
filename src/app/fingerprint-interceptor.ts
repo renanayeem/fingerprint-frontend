@@ -1,17 +1,13 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { catchError, throwError } from 'rxjs';
 
 export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
   const authService = inject(AuthService);
-  const token = authService.getToken();
 
   const clonedReq = req.clone({
-    withCredentials: true,
-    setHeaders: token ? { 'Authorization': `Bearer ${token}` } : {}
+    withCredentials: true
   });
 
   return next(clonedReq).pipe(

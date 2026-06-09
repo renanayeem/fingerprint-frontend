@@ -10,15 +10,10 @@ export class AuthService {
   constructor(private router: Router, private http: HttpClient) {}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('isLoggedIn');
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  setToken(token: string): void {
-    localStorage.setItem('token', token);
+  setLoggedIn(): void {
     localStorage.setItem('isLoggedIn', 'true');
   }
 
@@ -34,7 +29,6 @@ export class AuthService {
   }
 
   private clearSession(): void {
-    localStorage.removeItem('token');
     localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/login']);
   }

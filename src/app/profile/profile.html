@@ -1,0 +1,19 @@
+<div class="profile-container">
+  <div class="navbar">
+    <h1>🔒 Fingerprint Auth</h1>
+    <div class="nav-links">
+      <a routerLink="/home">Home</a>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="profile-card">
+      <div class="avatar">{{ username ? username.charAt(0).toUpperCase() : '?' }}</div>
+      <h2>{{ username ? username : 'Loading...' }}</h2>
+      <p class="label">Username</p>
+      <div class="info-box">
+        <p>🔒 Logged in securely with browser fingerprint</p>
+      </div>
+    </div>
+  </div>
+</div>

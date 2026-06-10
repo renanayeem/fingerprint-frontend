@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -24,6 +25,13 @@ export class Home {
     this.http.post('http://localhost:8080/api/data', {}).subscribe({
       next: (res: any) => this.message = res.message,
       error: () => this.message = 'Error posting data!'
+    });
+  }
+
+  secure() {
+    this.http.get('http://localhost:8080/api/secure').subscribe({
+      next: (res: any) => this.message = res.message,
+      error: () => this.message = 'Access denied!'
     });
   }
 

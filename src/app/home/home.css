@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.home-container {
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.navbar {
+  background: #1a1a2e;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  color: white;
+  font-size: 20px;
+}
+
+.navbar button {
+  background: #4361ee;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.navbar button:hover {
+  background: #3451d1;
+}
+
+.content {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.welcome-text {
+  font-size: 24px;
+  color: #1a1a2e;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.button-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: white;
+}
+
+.btn-primary {
+  background: #4361ee;
+}
+
+.btn-primary:hover {
+  background: #3451d1;
+}
+
+.btn-secondary {
+  background: #7209b7;
+}
+
+.btn-secondary:hover {
+  background: #560bad;
+}
+
+.message-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-size: 15px;
+  min-height: 60px;
+}
+
+.btn-secure {
+  background: #e63946;
+}
+
+.btn-secure:hover {
+  background: #c1121f;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}

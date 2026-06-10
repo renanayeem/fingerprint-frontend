@@ -12,13 +12,21 @@ import { HttpClient } from '@angular/common/http';
 export class Register {
   username = '';
   password = '';
+  name = '';
+  email = '';
+  phone = '';
+  address = '';
 
   constructor(private router: Router, private http: HttpClient) {}
 
   register() {
     this.http.post('http://localhost:8080/api/register', {
       username: this.username,
-      password: this.password
+      password: this.password,
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      address: this.address
     }).subscribe({
       next: () => {
         alert('Registration successful! Please login.');

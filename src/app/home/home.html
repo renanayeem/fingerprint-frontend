@@ -9,12 +9,29 @@
   <div class="content">
     <p class="welcome-text">Welcome to the Dashboard!</p>
     <div class="button-group">
-      <button class="btn btn-primary" (click)="getData()">Get Data</button>
-      <button class="btn btn-secondary" (click)="postData()">Post Data</button>
+      <button class="btn btn-primary" (click)="getData()">Get Vehicles</button>
+      <button class="btn btn-secondary" (click)="postData()">Add Vehicle</button>
       <button class="btn btn-secure" (click)="secure()">Secure Endpoint</button>
     </div>
-    <div class="message-box">
-      <p>{{ message || 'Click a button to fetch data...' }}</p>
+
+    <div class="add-form" *ngIf="showAddForm">
+      <input type="text" placeholder="Vehicle Name" [(ngModel)]="newVehicle.vehicleName" />
+      <input type="text" placeholder="Vehicle Number" [(ngModel)]="newVehicle.vehicleNumber" />
+      <input type="text" placeholder="Vehicle Type (Car/Bike/Truck)" [(ngModel)]="newVehicle.vehicleType" />
+      <button class="btn btn-primary" (click)="addVehicle()">Submit</button>
+    </div>
+
+    <div class="message-box" *ngIf="message">
+      <p>{{ message }}</p>
+    </div>
+
+    <div class="vehicle-list" *ngIf="vehicles.length > 0">
+      <h3>My Vehicles</h3>
+      <div class="vehicle-card" *ngFor="let v of vehicles">
+        <p><strong>🚗 {{ v.vehicleName }}</strong></p>
+        <p>Number: {{ v.vehicleNumber }}</p>
+        <p>Type: {{ v.vehicleType }}</p>
+      </div>
     </div>
   </div>
 </div>

@@ -12,6 +12,10 @@ import { CommonModule } from '@angular/common';
 })
 export class Profile implements OnInit {
   username: string | null = null;
+  name: string | null = null;
+  email: string | null = null;
+  phone: string | null = null;
+  address: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -21,11 +25,13 @@ export class Profile implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('Profile component loaded');
     this.http.get('http://localhost:8080/api/profile').subscribe({
       next: (res: any) => {
-        console.log('Profile response:', res);
         this.username = res.username;
+        this.name = res.name;
+        this.email = res.email;
+        this.phone = res.phone;
+        this.address = res.address;
         this.cdr.detectChanges();
       },
       error: (err) => {

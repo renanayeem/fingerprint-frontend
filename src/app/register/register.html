@@ -3,6 +3,10 @@
     <h2>Create Account</h2>
     <input type="text" placeholder="Username" [(ngModel)]="username" />
     <input type="password" placeholder="Password" [(ngModel)]="password" />
+    <input type="text" placeholder="Full Name" [(ngModel)]="name" />
+    <input type="email" placeholder="Email" [(ngModel)]="email" />
+    <input type="text" placeholder="Phone" [(ngModel)]="phone" />
+    <input type="text" placeholder="Address" [(ngModel)]="address" />
     <button (click)="register()">Register</button>
     <p>Already have an account? <a routerLink="/login">Login</a></p>
   </div>

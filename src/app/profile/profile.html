@@ -9,8 +9,22 @@
   <div class="content">
     <div class="profile-card">
       <div class="avatar">{{ username ? username.charAt(0).toUpperCase() : '?' }}</div>
-      <h2>{{ username ? username : 'Loading...' }}</h2>
-      <p class="label">Username</p>
+      <h2>{{ name ? name : username }}</h2>
+      <p class="label">{{ username }}</p>
+
+      <div class="info-row">
+        <span class="info-label">📧 Email</span>
+        <span class="info-value">{{ email ? email : 'Not provided' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">📱 Phone</span>
+        <span class="info-value">{{ phone ? phone : 'Not provided' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">📍 Address</span>
+        <span class="info-value">{{ address ? address : 'Not provided' }}</span>
+      </div>
+
       <div class="info-box">
         <p>🔒 Logged in securely with browser fingerprint</p>
       </div>

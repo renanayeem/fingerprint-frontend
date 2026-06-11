@@ -3,6 +3,7 @@
     <h2>Welcome Back</h2>
     <input type="text" placeholder="Username" [(ngModel)]="username" />
     <input type="password" placeholder="Password" [(ngModel)]="password" />
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
     <button (click)="login()">Login</button>
     <p>Don't have an account? <a routerLink="/register">Register</a></p>
   </div>

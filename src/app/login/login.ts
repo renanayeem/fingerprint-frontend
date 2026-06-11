@@ -5,16 +5,18 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { environment } from '../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class Login {
   username = '';
   password = '';
+  errorMessage = '';
 
   constructor(
     private router: Router,
@@ -46,7 +48,7 @@ export class Login {
         this.router.navigate(['/home']);
       },
       error: () => {
-        alert('Invalid credentials!');
+        this.errorMessage = 'Invalid credentials!';
       }
     });
   }

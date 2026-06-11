@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, CommonModule],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -17,6 +18,8 @@ export class Register {
   email = '';
   phone = '';
   address = '';
+  errorMessage = '';
+  successMessage = '';
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -30,11 +33,13 @@ export class Register {
       address: this.address
     }).subscribe({
       next: () => {
-        alert('Registration successful! Please login.');
-        this.router.navigate(['/login']);
+        this.successMessage = 'Registration successful! Please login.';
+        this.errorMessage = '';
+        setTimeout(() => this.router.navigate(['/login']), 1500);
       },
       error: (err) => {
-        alert(err.error.message || 'Registration failed!');
+        this.errorMessage = err.error.message || 'Registration failed!';
+        this.successMessage = '';
       }
     });
   }

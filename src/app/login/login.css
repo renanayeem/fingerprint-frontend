@@ -81,3 +81,15 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  color: #e53935;
+  font-size: 0.875rem;
+  margin: 4px 0;
+}
+
+.success-message {
+  color: #43a047;
+  font-size: 0.875rem;
+  margin: 4px 0;
+}

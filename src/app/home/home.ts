@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { RouterLink } from '@angular/router';
@@ -18,14 +18,13 @@ export class Home {
   showAddForm = false;
   newVehicle = { vehicleName: '', vehicleNumber: '', vehicleType: '' };
 
-  constructor(private http: HttpClient, private authService: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getData() {
     this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
       next: (res: any) => {
         this.vehicles = res;
         this.message = '';
-        this.cdr.detectChanges();
       },
       error: () => this.message = 'Error loading vehicles!'
     });
@@ -33,7 +32,6 @@ export class Home {
 
   postData() {
     this.showAddForm = true;
-    this.cdr.detectChanges();
   }
 
   addVehicle() {
@@ -45,7 +43,6 @@ export class Home {
         this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
           next: (res: any) => {
             this.vehicles = res;
-            this.cdr.detectChanges();
           }
         });
       },
@@ -59,7 +56,6 @@ export class Home {
     this.http.get(`${environment.apiUrl}/secure`).subscribe({
       next: (res: any) => {
         this.message = res.message;
-        this.cdr.detectChanges();
       },
       error: () => this.message = 'Access denied!'
     });

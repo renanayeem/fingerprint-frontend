@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -21,8 +21,7 @@ export class Profile implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -33,7 +32,6 @@ export class Profile implements OnInit {
         this.email = res.email;
         this.phone = res.phone;
         this.address = res.address;
-        this.cdr.detectChanges();
       },
       error: (err) => {
         console.log('Profile error:', err);

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -11,33 +12,15 @@ import { environment } from '../../environments/environment';
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
-export class Profile implements OnInit {
-  username: string | null = null;
-  name: string | null = null;
-  email: string | null = null;
-  phone: string | null = null;
-  address: string | null = null;
+export class Profile {
+  profile$: Observable<any>;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.http.get(`${environment.apiUrl}/profile`).subscribe({
-      next: (res: any) => {
-        this.username = res.username;
-        this.name = res.name;
-        this.email = res.email;
-        this.phone = res.phone;
-        this.address = res.address;
-      },
-      error: (err) => {
-        console.log('Profile error:', err);
-        this.router.navigate(['/login']);
-      }
-    });
+  ) {
+    this.profile$ = this.http.get(`${environment.apiUrl}/profile`);
   }
 
   logout() {

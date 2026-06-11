@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,14 @@ export class AuthService {
   constructor(private router: Router, private http: HttpClient) {}
 
   isLoggedIn(): Observable<boolean> {
-    return this.http.get('http://localhost:8080/api/profile').pipe(
+    return this.http.get(`${environment.apiUrl}/profile`).pipe(
       map(() => true),
       catchError(() => of(false))
     );
   }
 
   logout(): void {
-    this.http.post('http://localhost:8080/api/logout', {}).subscribe({
+    this.http.post(`${environment.apiUrl}/logout`, {}).subscribe({
       next: () => {
         this.clearSession();
       },

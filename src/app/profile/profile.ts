@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +26,7 @@ export class Profile implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:8080/api/profile').subscribe({
+    this.http.get(`${environment.apiUrl}/profile`).subscribe({
       next: (res: any) => {
         this.username = res.username;
         this.name = res.name;

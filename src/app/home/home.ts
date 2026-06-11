@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ export class Home {
   constructor(private http: HttpClient, private authService: AuthService, private cdr: ChangeDetectorRef) {}
 
   getData() {
-    this.http.get('http://localhost:8080/api/vehicles').subscribe({
+    this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
       next: (res: any) => {
         this.vehicles = res;
         this.message = '';
@@ -36,12 +37,12 @@ export class Home {
   }
 
   addVehicle() {
-    this.http.post('http://localhost:8080/api/vehicles', this.newVehicle).subscribe({
+    this.http.post(`${environment.apiUrl}/vehicles`, this.newVehicle).subscribe({
       next: (res: any) => {
         this.message = res.message;
         this.showAddForm = false;
         this.newVehicle = { vehicleName: '', vehicleNumber: '', vehicleType: '' };
-        this.http.get('http://localhost:8080/api/vehicles').subscribe({
+        this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
           next: (res: any) => {
             this.vehicles = res;
             this.cdr.detectChanges();
@@ -53,16 +54,17 @@ export class Home {
   }
 
   secure() {
-  this.vehicles = [];
-  this.showAddForm = false;
-  this.http.get('http://localhost:8080/api/secure').subscribe({
-    next: (res: any) => {
-      this.message = res.message;
-      this.cdr.detectChanges();
-    },
-    error: () => this.message = 'Access denied!'
-  });
-}
+    this.vehicles = [];
+    this.showAddForm = false;
+    this.http.get(`${environment.apiUrl}/secure`).subscribe({
+      next: (res: any) => {
+        this.message = res.message;
+        this.cdr.detectChanges();
+      },
+      error: () => this.message = 'Access denied!'
+    });
+  }
+
   logout() {
     this.authService.logout();
   }

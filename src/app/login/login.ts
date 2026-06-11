@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -36,13 +37,12 @@ export class Login {
     const rawFingerprint = result.visitorId;
     const hashedFingerprint = await this.hashFingerprint(rawFingerprint);
 
-    this.http.post('http://localhost:8080/api/login', {
+    this.http.post(`${environment.apiUrl}/login`, {
       username: this.username,
       password: this.password,
       fingerprint: hashedFingerprint
     }).subscribe({
-      next: (res: any) => {
-        this.authService.setLoggedIn();
+      next: () => {
         this.router.navigate(['/home']);
       },
       error: () => {

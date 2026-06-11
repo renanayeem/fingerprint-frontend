@@ -24,6 +24,8 @@ export class Login {
   ) {}
 
   async login() {
+    console.log('Fingerprint hash at login:', this.fingerprintService.getHash());
+
     this.http.post(`${environment.apiUrl}/login`, {
       username: this.username,
       password: this.password,

@@ -6,6 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
 
+interface Vehicle {
+  id: number;
+  vehicleName: string;
+  vehicleNumber: string;
+  vehicleType: string;
+}
+
 @Component({
   selector: 'app-home',
   imports: [RouterLink, FormsModule, CommonModule],
@@ -14,15 +21,15 @@ import { environment } from '../../environments/environment';
 })
 export class Home {
   message = '';
-  vehicles: any[] = [];
+  vehicles: Vehicle[] = [];
   showAddForm = false;
   newVehicle = { vehicleName: '', vehicleNumber: '', vehicleType: '' };
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getData() {
-    this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
-      next: (res: any) => {
+    this.http.get<Vehicle[]>(`${environment.apiUrl}/vehicles`).subscribe({
+      next: (res) => {
         this.vehicles = res;
         this.message = '';
       },
@@ -35,13 +42,13 @@ export class Home {
   }
 
   addVehicle() {
-    this.http.post(`${environment.apiUrl}/vehicles`, this.newVehicle).subscribe({
-      next: (res: any) => {
+    this.http.post<{ message: string }>(`${environment.apiUrl}/vehicles`, this.newVehicle).subscribe({
+      next: (res) => {
         this.message = res.message;
         this.showAddForm = false;
         this.newVehicle = { vehicleName: '', vehicleNumber: '', vehicleType: '' };
-        this.http.get(`${environment.apiUrl}/vehicles`).subscribe({
-          next: (res: any) => {
+        this.http.get<Vehicle[]>(`${environment.apiUrl}/vehicles`).subscribe({
+          next: (res) => {
             this.vehicles = res;
           }
         });
@@ -53,8 +60,8 @@ export class Home {
   secure() {
     this.vehicles = [];
     this.showAddForm = false;
-    this.http.get(`${environment.apiUrl}/secure`).subscribe({
-      next: (res: any) => {
+    this.http.get<{ message: string }>(`${environment.apiUrl}/secure`).subscribe({
+      next: (res) => {
         this.message = res.message;
       },
       error: () => this.message = 'Access denied!'

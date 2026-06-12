@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   private clearSession(): void {
-    localStorage.removeItem('isLoggedIn');
+    
     this.router.navigate(['/login']);
   }
 }

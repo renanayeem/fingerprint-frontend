@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { FingerprintService } from '../fingerprint.service';
@@ -24,9 +24,7 @@ export class Login {
   ) {}
 
   async login() {
-    console.log('Fingerprint hash at login:', this.fingerprintService.getHash());
-
-    this.http.post(`${environment.apiUrl}/login`, {
+    this.http.post<{ message: string }>(`${environment.apiUrl}/login`, {
       username: this.username,
       password: this.password,
       fingerprint: this.fingerprintService.getHash()
@@ -34,8 +32,12 @@ export class Login {
       next: () => {
         this.router.navigate(['/home']);
       },
-      error: () => {
-        this.errorMessage = 'Invalid credentials!';
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 409) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = 'Invalid credentials!';
+        }
       }
     });
   }

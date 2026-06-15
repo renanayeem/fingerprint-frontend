@@ -8,10 +8,16 @@ export class FingerprintService {
   private fingerprintHash: string = '';
 
   async init(): Promise<void> {
+  try {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
     this.fingerprintHash = await this.hash(result.visitorId);
+  } catch (err) {
+    console.error('Fingerprint initialization failed', err);
+    // App continues with empty fingerprint
+    // Backend will handle missing fingerprint appropriately
   }
+}
 
   getHash(): string {
     return this.fingerprintHash;

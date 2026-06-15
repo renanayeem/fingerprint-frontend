@@ -38,7 +38,7 @@ export class Register {
         setTimeout(() => this.router.navigate(['/login']), 1500);
       },
       error: (err) => {
-        this.errorMessage = err.error.message || 'Registration failed!';
+     this.errorMessage = (typeof err.error === 'object' && err.error?.message) || 'Registration failed!';
         this.successMessage = '';
       }
     });

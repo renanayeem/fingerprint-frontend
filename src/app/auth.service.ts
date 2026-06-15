@@ -25,8 +25,9 @@ export class AuthService {
         this.clearSession();
       },
       error: () => {
-        console.error('Logout failed on server, session not cleared');
-      }
+  console.error('Logout failed on server, clearing session locally');
+  this.clearSession();
+}
     });
   }
 

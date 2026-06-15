@@ -10,6 +10,8 @@ import { environment } from '../environments/environment';
 })
 export class AuthService {
 
+  private isLoggingOut = false;
+
   constructor(private router: Router, private http: HttpClient) {}
 
   isLoggedIn(): Observable<boolean> {
@@ -20,19 +22,24 @@ export class AuthService {
   }
 
   logout(): void {
+    if (this.isLoggingOut) {
+      return;
+    }
+    this.isLoggingOut = true;
+
     this.http.post(`${environment.apiUrl}/logout`, {}).subscribe({
       next: () => {
         this.clearSession();
       },
       error: () => {
-  console.error('Logout failed on server, clearing session locally');
-  this.clearSession();
-}
+        console.error('Logout failed on server, clearing session locally');
+        this.clearSession();
+      }
     });
   }
 
   private clearSession(): void {
-    
+    this.isLoggingOut = false;
     this.router.navigate(['/login']);
   }
 }

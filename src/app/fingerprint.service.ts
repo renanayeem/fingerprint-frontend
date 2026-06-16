@@ -14,8 +14,7 @@ export class FingerprintService {
     this.fingerprintHash = await this.hash(result.visitorId);
   } catch (err) {
     console.error('Fingerprint initialization failed', err);
-    // App continues with empty fingerprint
-    // Backend will handle missing fingerprint appropriately
+    
   }
 }
 

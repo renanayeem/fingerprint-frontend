@@ -11,17 +11,8 @@ import { environment } from '../environments/environment';
 export class AuthService {
 
   private isLoggingOut = false;
-  private sessionSecret: string = '';
 
   constructor(private router: Router, private http: HttpClient) {}
-
-  setSessionSecret(secret: string): void {
-    this.sessionSecret = secret;
-  }
-
-  getSessionSecret(): string {
-    return this.sessionSecret;
-  }
 
   isLoggedIn(): Observable<boolean> {
     return this.http.get(`${environment.apiUrl}/profile`).pipe(
@@ -49,7 +40,6 @@ export class AuthService {
 
   private clearSession(): void {
     this.isLoggingOut = false;
-    this.sessionSecret = '';
     this.router.navigate(['/login']);
   }
 }

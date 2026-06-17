@@ -5,6 +5,7 @@ import { FingerprintService } from './fingerprint.service';
 import { HmacService } from './hmacservice';
 import { Router } from '@angular/router';
 import { catchError, throwError, from, switchMap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 const SIGNED_ROUTES = [
   { method: 'POST', path: '/api/vehicles' },
@@ -33,11 +34,10 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
       });
     }
 
-    const secret = authService.getSessionSecret();
     const payload = req.body ? JSON.stringify(req.body) : '';
     const timestamp = Date.now().toString();
     const payloadHash = await hmacService.hashPayload(payload);
-    const signature = await hmacService.computeSignature(fingerprint, payloadHash, timestamp, secret);
+    const signature = await hmacService.computeSignature(fingerprint, payloadHash, timestamp, environment.hmacSecret);
 
     return req.clone({
       withCredentials: true,

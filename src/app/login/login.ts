@@ -5,7 +5,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { FingerprintService } from '../fingerprint.service';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,18 +20,16 @@ export class Login {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private fingerprintService: FingerprintService,
-    private authService: AuthService
+    private fingerprintService: FingerprintService
   ) {}
 
   async login() {
-    this.http.post<{ message: string; sessionSecret: string }>(`${environment.apiUrl}/login`, {
+    this.http.post<{ message: string }>(`${environment.apiUrl}/login`, {
       username: this.username,
       password: this.password,
       fingerprint: this.fingerprintService.getHash()
     }).subscribe({
-      next: (res) => {
-        this.authService.setSessionSecret(res.sessionSecret);
+      next: () => {
         this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {

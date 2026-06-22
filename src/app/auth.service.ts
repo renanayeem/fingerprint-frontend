@@ -12,12 +12,27 @@ export class AuthService {
 
   private isLoggingOut = false;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   isLoggedIn(): Observable<boolean> {
-    return this.http.get(`${environment.apiUrl}/profile`).pipe(
+    return this.http.get(`${environment.apiUrl}/profile`, {
+      withCredentials: true
+    }).pipe(
       map(() => true),
       catchError(() => of(false))
+    );
+  }
+
+  refreshToken(): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/refresh`,
+      {},
+      {
+        withCredentials: true
+      }
     );
   }
 
@@ -25,9 +40,16 @@ export class AuthService {
     if (this.isLoggingOut) {
       return;
     }
+
     this.isLoggingOut = true;
 
-    this.http.post(`${environment.apiUrl}/logout`, {}).subscribe({
+    this.http.post(
+      `${environment.apiUrl}/logout`,
+      {},
+      {
+        withCredentials: true
+      }
+    ).subscribe({
       next: () => {
         this.clearSession();
       },

@@ -16,7 +16,7 @@ import { environment } from '../environments/environment';
 
 const SIGNED_ROUTES = [
   { method: 'POST', path: '/api/vehicles' },
-  { method: 'POST', path: '/api/logout' }
+  
 ];
 
 function needsSignature(method: string, url: string): boolean {

@@ -15,8 +15,7 @@ import {
 import { environment } from '../environments/environment';
 
 const SIGNED_ROUTES = [
-  { method: 'POST', path: '/api/vehicles' },
-  
+  { method: 'POST', path: '/api/vehicles' }  // bug 1 fix: removed /api/logout
 ];
 
 function needsSignature(method: string, url: string): boolean {
@@ -26,7 +25,7 @@ function needsSignature(method: string, url: string): boolean {
 }
 
 let isRefreshing = false;
-const refreshSubject = new BehaviorSubject<boolean>(false);
+const refreshSubject = new BehaviorSubject<boolean | null>(null);  // bug 4 fix: null as initial value
 
 export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -83,7 +82,7 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
             if (!isRefreshing) {
 
               isRefreshing = true;
-              refreshSubject.next(false);
+              refreshSubject.next(null);
 
               return authService.refreshToken().pipe(
 
@@ -103,6 +102,7 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
                 catchError(() => {
 
                   isRefreshing = false;
+                  refreshSubject.next(false);  // bug 4 fix: unblock waiting requests
 
                   console.log('Refresh failed. Logging out...');
                   authService.logout();
@@ -113,17 +113,16 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
               );
             }
 
+            // bug 4 fix: let both true and false through, handle false explicitly
             return refreshSubject.pipe(
-
-              filter(refreshed => refreshed),
+              filter(refreshed => refreshed !== null),
               take(1),
-
-              switchMap(() =>
-                from(buildRequest()).pipe(
+              switchMap(refreshed => {
+                if (!refreshed) return throwError(() => error);
+                return from(buildRequest()).pipe(
                   switchMap(newReq => next(newReq))
-                )
-              )
-
+                );
+              })
             );
           }
 
@@ -132,5 +131,5 @@ export const fingerprintInterceptor: HttpInterceptorFn = (req, next) => {
         })
       )
     )
-  );
+  ); 
 };
